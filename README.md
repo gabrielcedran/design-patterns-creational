@@ -80,6 +80,42 @@ Singleton has one constructor. Factory has multiple constructors and returns dif
 Singleton has typically no interface. Factory is interface driven.
 
 
+## Builder
 
+This pattern is great for handling the construction of objects that may contain a lot of parameters and we want to make the object
+immutable once we are done constructing it.
+
+*It solves a very common problem in object-oriented programming that is determining what constructor to use. As 
+often people create many constructors and it can become difficult to manage (known as telescoping constructors).*
+
+When considering if the builder pattern makes sense or not for a given problem, the first thing to take into consideration
+is if it handles a number of complex constructors with large number of parameters (or setters). 
+
+Some examples from the java api for this pattern are: StringBuilder, DocumentBuilder and LocaleBuilder.
+
+### Design
+
+A builder is usually built with a static inner class that returns the instance of the wanted object. The builder calls the 
+appropriate constructor based on its state.
+
+![Builder Class Diagram](docs/builder-class-diagram.png)
+
+Example of an everyday singleton usage:
+
+```
+StringBuilder builder = new StringBuilder();
+
+builder.append("don");
+builder.append("bob");
+builder.append(123);
+
+System.out.println(builder.toString());
+```
+
+#### Builder vs Prototype
+
+Builder is designed to handle complex constructors while Prototype is implemented around a clone method.
+
+Builder works well with legacy code (example StringBuilder) while Prototype is difficult to implement in legacy code.
 
 
