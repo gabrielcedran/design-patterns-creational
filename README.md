@@ -119,3 +119,67 @@ Builder is designed to handle complex constructors while Prototype is implemente
 Builder works well with legacy code (example StringBuilder) while Prototype is difficult to implement in legacy code.
 
 
+## Prototype
+
+This pattern is used when the type of object to be created is determined by a prototypical instance, which is cloned to 
+produce a new instance. Many times, the prototype pattern is used to get a unique instance of the same object.
+
+The concepts when choosing a prototype are when you are trying to avoid costly creation. However this pattern is not 
+cut and dry as other patterns and in many instances it is only chosen when refactoring, not when people are thinking upfront.
+Unlike singleton for instance, that you know you only want one instance, you wouldn't think of it in terms of being expensive
+to create.
+
+Prototypes also avoid subclassing and typically don't use the keyword new (the first instance might use it but after that
+thet are cloned). 
+
+An example from the java api: java.lang.Object#clone().
+
+### Design 
+
+At some extent the prototype pattern is a pattern that just changes the way that the new keyword is called. If an object is 
+expensive to create but we can get what we need by copying the member variables, then the prototype is a great fit.
+
+The prototype typically implements the Clone/Cloneable method and interface which enabled us to avoid the keyword `new`.
+
+Although we are just essentially making a copy, each instance is still unique.
+
+The clone could use parameters if needed but typically it doesn't. 
+
+It is down to the developer to determine between shallow and deep copies. Shallow copies just copy the immediate properties 
+whereas a deep copy will copy any of its object references as well.
+
+![Prototype Class Diagram](docs/prototype-class-diagram.png)
+
+Example of code:
+
+```
+public class Statement implements Cloneable {
+    public Statemente(String sql, List<String> parameters, Record record) {
+        this.sql = sql;
+        this.paramenters = parameters;
+        this.record = record;
+    }
+
+    public Statement clone() {
+        try {
+            return (Statement) super.clone();
+        } catch (CloneNotSupportedException e) {
+            return null;
+        }
+    }
+}
+```
+
+ps: the cloneable interface was created in java 1.0 thus it is quite old and does not support generic. Creating
+your own Cloneable interface and implementation wouldn't take long and would get rid of all the castings the Cloneable
+interface imposes.
+
+For the registry, there are many implementation options. The example here is the simplest one.
+
+### Prototype vs Factory
+
+Prototype focuses on lighter weight construction via copy constructor or clone method.  
+Prototype allows a choice between shallow and deep copies.
+Prototype only cares about a copy of itself (does not change the object type).
+
+Factory allows multiple constructors and always provide a fresh instance (not a copy).
