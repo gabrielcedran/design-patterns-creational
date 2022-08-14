@@ -182,4 +182,51 @@ Prototype focuses on lighter weight construction via copy constructor or clone m
 Prototype allows a choice between shallow and deep copies.
 Prototype only cares about a copy of itself (does not change the object type).
 
-Factory allows multiple constructors and always provide a fresh instance (not a copy).
+Factory allows multiple constructors and always provide a fresh instance (not a copy). 
+
+
+## Factory Method
+
+The concept behind Factory pattern is that is does not expose instantiation logic and the client knows next to nothing even
+the type of object that is being created. It is capable to do so by deferring the instantiation or creation logic to 
+the subclass. All the client usually knows about is a common interface that the factory exposes.
+
+_Factories are oftentimes implemented by an architecture or a framework and implemented by the user of that framework_
+
+Examples in the java api: Calendar, ResourceBundle and NumberFormat.
+
+### Design
+
+Factory is almost the opposite of the singleton. The factory is responsible for creating instances and managing the 
+lifecycle (at least the creation part of the lifecycle). 
+
+Created object are referenced through a common interface. Factories will also reference multiple concrete classes 
+or implementations - but the clients are unaware since they are referenced through the common interface.
+
+The method that creates an object is usually parameterised, and these parameters are used to determine the concrete type.
+
+![Factory Method Class Diagram](docs/factory-method-class-diagram.png)
+
+Everyday example:
+
+```
+Calendar calendar = Calendar.getInstance(); // even though it seems a singleton it is actually a factory as it returns differente instances every time
+
+System.out.println(calendar);
+System.out.println(calendar.get(Calendar.DAY_OF_MONTH));
+
+```
+
+#### Pitfalls
+
+This pattern is slightly more complex than the previous ones and requires a bit more code.
+
+Another issue that most people often get wrong when implementing the factory is that *creation doesn't take place in the factory itself
+but rather in the `subclasses` of the type of factory method we are creating.*
+
+### Factory Method vs Singleton
+
+Singleton always returns the same instance and has ONE constructor that takes no args. Factory method returns various instances 
+and has multiple constructors and can take multiple arguments.
+
+Singletons don't have interfaces nor subclasses while factory method is interface driven.
